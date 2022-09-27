@@ -36,3 +36,23 @@
     transform: rotate(360deg);
   }
 }
+
+.pagination{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination h4{
+  margin: 2rem;
+}
+
+.pagination button{
+  border-radius: 8px;
+}
+
+.pagination button:hover{
+  background-color: antiquewhite;
+}

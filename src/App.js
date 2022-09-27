@@ -10,9 +10,13 @@ function App() {
   const publicKey = '0d507c7bf9198fff3e2581f6dbb50d5e'
   const ts = '1';
   const hash = md5(ts+privateKey+publicKey);
-  const url = 'https://gateway.marvel.com:443/v1/public/comics?orderBy=title&limit=100&ts='+ts+'&apikey='+publicKey+'&hash='+hash
-
+  
+  const [page,setpage] = useState(0);
+  let offset= page*100;
+  const url = 'https://gateway.marvel.com:443/v1/public/comics?orderBy=title&limit=100&offset='+offset+'&ts='+ts+'&apikey='+publicKey+'&hash='+hash
+ 
   const [comics, setComics] =useState([])
+  
 
   useEffect(()=>{
     axios.get(url)
@@ -20,22 +24,27 @@ function App() {
       setComics(res.data.data.results)
     })
     .catch(error=>console.log(error))
-  },[]);
+  },[url]);
 
   function date(d){
     let creationDate = d.getDate()+"/"+d.getMonth()+"/"+d.getYear()
     return creationDate
   }
-  
+
 
 
   return (
     <div className="App">
       <h1>Marvel Comics</h1>
+        <div className='pagination'>
+          <button onClick={()=>setpage(page-1)}>-</button>
+          <h4>{page}</h4>
+          <button onClick={()=>setpage(page+1)}>+</button>
+        </div>
       <div className="row row-cols-1 row-cols-md-3 g-4">
         { comics.map(comic=>(
-            <div className="card" style={{width:"18rem",heigth:"18rem"}}>
-              <img src={`${comic.thumbnail.path}.${comic.thumbnail.extension}`} className='card-img-top' style={{width:"80%", heigth:"80%"}}/>
+            <div className="card" style={{width:"16rem",heigth:"18rem"}}>
+              <img src={`${comic.thumbnail.path}.${comic.thumbnail.extension}`} className='card-img-top' style={{width:"90%", heigth:"80%",alignSelf:"center",marginTop:"10%"}} alt=''/>
               <div className="card-body">
                 <p className="card-title">{comic.title}</p>
                 <br></br>
